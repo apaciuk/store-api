@@ -1,42 +1,89 @@
-# rails-7-api-starter
+![build & test & quality](https://github.com/cousins-factory/rails-api-boilerplate/actions/workflows/main.yml/badge.svg?branch=main)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+![Ruby Version](https://img.shields.io/badge/ruby_version-3.1.2-blue.svg)
+![Rails Version](https://img.shields.io/badge/rails_version-7.0.4-c52f24.svg)
+[![Swagger documentation](https://img.shields.io/badge/swagger_documentation-84e92c.svg?&logo=swagger&logoColor=black)](docs/SWAGGER.md)
 
-##### Rails 7 API Starter with user Devise-Api Auth and just enough essential configuration options, with UUId's/RSpec, as api/v1
+# store-api
 
-- Leaving other options open to individual preference.
+![cover](docs/cover.png)
 
-##### Set Devise primary model
+# How to Works?
 
-After setting devise model (rails g devise Model/User/Account) add the :api module to the created model [https://github.com/nejdetkadir/devise-api] and any other options needed.
+```mermaid
+flowchart TD
+  R[Request] --> C[Application Controller]
+  C --> O[Application Operation]
+  O -- Validate Params --> AC[Application Contract]
+  O -- Application Contract returned success?--> S[Application Service]
+  AC -- Validation success? --> O[Application Operation]
+  AC -- Validation failed? --> E[Contract Errors]
+  E --> RE
+  S -- Process successful? --> RS[Resource]
+  S -- Process failed? --> OE[Resource Errors]
+  OE --> RE[Response]
+  RS --> RE
+  RE -- Returns --> C
+```
 
-Example controller with standard and restricted methods
+# Documentations
 
-skip_before_action :verify_authenticity_token, raise: false
-before_action :authenticate_devise_api_token!, only: [:restricted]
-def home
-end
+- [Swagger](docs/SWAGGER.md)
+- [Service generator](docs/SERVICE.md)
+- [Contract generator](docs/CONTRACT.md)
+- [Search & Filter & Sort](docs/RANSACK.md)
 
-def restricted
-devise_api_token = current_devise_api_token
-if devise_api_token
-render json: { message: "You are logged in as #{devise_api_token.resource_owner.email}" }, status: :ok
-else
-render json: { message: 'You are not logged in' }, status: :unauthorized
-end
-end
+# Installation
 
-###### RSpec
+## Prerequisites
 
-- Configured with RSpec and generators, FactoryBot
+- [Ruby](https://rvm.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
 
-* Ruby version
-  3.1.2
+## Installation
 
-Deployment instructions, setup
+- Install GEM dependencies:
 
-- rails db:create
-- rails g devise Model - check/adjust migrations
-- rails db:migrate
-- Place :api module in relevent model
-- Set controller code for restricted, example above, with your controller in api/v1
+  ```bash
+  bundle install
+  ```
 
-- Build API!
+- Create database, migrate tables and run the seed data:
+
+  ```bash
+  rails db:create
+  rails db:migrate
+  rails db:seed
+  ```
+
+- If you are setting up again, when you already have previous databases:
+
+  ```bash
+  rails db:reset
+  ```
+
+  `reset` is equivalent of `rails db:drop & rails db:setup`.
+
+- Run the server
+
+  ```bash
+  ./bin/dev
+
+
+  #### Doorkeeper
+  ```
+
+Starting from 5.5.0 RC1 Doorkeeper requires client authentication for Resource Owner Password Grant
+as stated in the OAuth RFC. You have to create a new OAuth client (Doorkeeper::Application) if you didn't
+have it before and use client credentials in HTTP Basic auth if you previously used this grant flow without
+client authentication.
+
+To opt out of this you could set the "skip_client_authentication_for_password_grant" configuration option
+to "true", but note that this is in violation of the OAuth spec and represents a security risk.
+
+Read https://github.com/doorkeeper-gem/doorkeeper/issues/561#issuecomment-612857163 for more details.
+
+```
+
+```

@@ -1,10 +1,19 @@
-Rails.application.routes.draw do
-  scope '/api' do
-    scope '/v1' do 
-       get 'pages/home', to: 'pages#home'
-       get 'pages/restricted', to: 'pages#restricted'
-       devise_for :users
-    end
-  end 
+# frozen_string_literal: true
 
-end 
+Rails.application.routes.draw do
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Defines the root path route ("/")
+  root 'swagger#index'
+
+  # Swagger documentation
+  draw :swagger
+
+  # API routes
+  defaults format: :json do
+    # V1
+    namespace :v1 do
+      draw :authentication
+    end
+  end
+end
