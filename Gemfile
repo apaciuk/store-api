@@ -123,4 +123,4 @@ gem 'doorkeeper', '~> 5.5', '>= 5.5.4'
 gem 'sidekiq', '~> 6.4', '>= 6.4.1'
 
 # Object-based searching [https://github.com/activerecord-hackery/ransack]
-gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'ransack', github: 'activerecord-hackery/ransack' 
